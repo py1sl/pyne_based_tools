@@ -16,8 +16,9 @@ def plot_act(fo, save=False, sfile=""):
         plt.savefig(sfile)
     
 
-def plot_act(fo_list, save=False, sfile=""):
+def plot_acts(fo_list, save=False, sfile=""):
     """ plot activity for several fispact objects as log plot"""
+
     for fo in fo_list:
         plt.plot(fo.sumdat[0], fo.sumdat[1])
     plt.yscale('log')
