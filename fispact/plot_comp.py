@@ -18,7 +18,7 @@ def plot_comp_pie(fo, ts, save=False, sfile=""):
     else:
         plt.savefig(sfile)
     
-def plot_comp_periodic()
+def plot_comp_periodic():
     """ elemental composition for a timestep as a table of elements"""
 
     plt.plot()
