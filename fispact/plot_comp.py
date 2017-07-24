@@ -7,7 +7,7 @@ plot composition
 from pyne import fispact
 import matplotlib.pyplot as plt
 import sys
-
+import argparse
 
 def plot_comp_pie(fo, ts, save=False, sfile=""):
     """ formatter pie chart of elemental composition for a timestep"""
@@ -28,6 +28,12 @@ def plot_comp_periodic():
         plt.savefig(sfile)
 
 if __name__ == "__main__":
-    path = sys.argv[1]
-    fo = fispact.read_fis_out(path)
-    plot_comp_pie(fo, 1)
+    parser = argparse.ArgumentParser(description="Plot activity over time for a fispact output file")
+    parser.add_argument("input", help="path to the input file")
+    parser.add_argument("timestep", help="timestep number to plot", default=1, type=int )
+    parser.add_argument("-o", "--output", action="store", dest="output",  help="path to the output file without filetype")
+    parser.add_argument("--table", action="store_true",  help="make a plot of the composition in form of table of elements")
+
+    args = parser.parse_args()
+    fo = fispact.read_fis_out(args.input)
+    plot_comp_pie(fo, args.timestep)

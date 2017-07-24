@@ -13,6 +13,7 @@ from matplotlib.colors import LogNorm
 import numpy as np
 import sys
 from pyne import nucname, nuc_data, fispact
+import argparse
 
 
 def plot_inv_act_para(fo, ts, para, low_limit=1e-5, save=False, sfile=""):
@@ -53,15 +54,18 @@ def plot_inv_para(fo, ts, param, low_limit=1e-10, save=False, sfile=""):
          atom_grid[z,n] = np.log10(float(nuc[param]))
 
     atom_grid = np.ma.masked_array(atom_grid, atom_grid<low_limit)
-    make_plot(atom_grid, save, sfile)
+    title = fo.sumdat[0][ts-1]
+    make_plot(atom_grid, title, save, sfile)
 
 
-def make_plot(data, save, sfile):
+def make_plot(data, title, save, sfile):
     """ makes the plot    """
+    plt.clf()
     plt.pcolormesh(data)
     plt.colorbar()
     plt.xlabel("N")
     plt.ylabel("Z")
+    plt.title(title)
 
     if save == False:
         plt.show()
@@ -70,8 +74,15 @@ def make_plot(data, save, sfile):
 
 
 if __name__ == "__main__":
-    path = sys.argv[1]
-    fo = fispact.read_fis_out(path)
-    ts = int(sys.argv[2])
-    plot_inv_act_para(fo, ts, 3)
+    parser = argparse.ArgumentParser(description="Plot dominant for a given timestep from a fispact output file")
+    parser.add_argument("input", help="path to the input file")
+    parser.add_argument("timestep", help="timestep number to plot", default=1, type=int )
+    parser.add_argument("-o", "--output", action="store", dest="output",  help="path to the output file")
+
+    args = parser.parse_args()
+    fo = fispact.read_fis_out(args.input)
+    if args.output:
+        plot_inv_para(fo, args.timestep, 1, 1e-10, True, args.output)
+    else:
+        plot_inv_para(fo, args.timestep, 1)
 

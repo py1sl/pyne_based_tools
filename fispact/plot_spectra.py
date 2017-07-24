@@ -4,6 +4,7 @@ plot gamma spectra
 from pyne import fispact
 import matplotlib.pyplot as plt
 import sys
+import argparse
 
 
 def plot_spectra_groups(fo, ts, save=False, sfile=""):
@@ -18,6 +19,14 @@ def plot_spectra_groups(fo, ts, save=False, sfile=""):
 
 
 if __name__ == "__main__":
-    path = sys.argv[1]
-    fo = fispact.read_fis_out(path)
-    plot_spectra_groups(fo, 1)
+    parser = argparse.ArgumentParser(description="Plot gamma spectra for a given timestep from a fispact output file")
+    parser.add_argument("input", help="path to the input file")
+    parser.add_argument("timestep", help="timestep number to plot", default=1, type=int )
+    parser.add_argument("-o", "--output", action="store", dest="output",  help="path to the output file without filetype")
+
+    args = parser.parse_args()
+    fo = fispact.read_fis_out(args.input)
+    if args.output:
+        plot_spectra_groups(fo, args.timestep, True, args.output)
+    else:
+        plot_spectra_groups(fo, args.timestep)
