@@ -11,7 +11,7 @@ def convert_meshtal(argv):
     out_path = argv[1]
     
     meshtal1 = mcnp.Meshtal(in_path)
-    meshtal1.tally[14].mesh.save(out_path + ".vtk")
+    meshtal1.tally[114].mesh.save(out_path + ".vtk")
 
     #call(["expand_tags.py", out_path+".h5m" , "-o", out_path+".vtk"])
     #call(["rm", out_path+".h5m"])
